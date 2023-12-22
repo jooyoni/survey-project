@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: transparent;
+    vertical-align: middle;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
