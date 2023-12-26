@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+추가중인 설문 내용들을 리스트 형태로 저장하고 있는 전역 상태값 었어야 함
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+설문 생성중 각 설문들은 drag and drop으로 순서를 변경할 수 있어야 함
 
-## Available Scripts
+각 설문은 다른 특정 설문에서 특정 답변 시에 노출 혹은 필수 처리가 가능해야 함
 
-In the project directory, you can run:
+각 추가중인 설문의 필요 데이터
 
-### `npm start`
+id:number; isShow: boolean | 다른 질문 리스트; isRequired: boolean | 다른 질문
+리스트; question:string;  
+type:"객관식" | "체크박스" | "단답형" | "장문형" | "범위"; options:{
+title:string; target:number | null; }[] | null;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+id : 질문 고유 id
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+isSHow : boolean | 다른 질문 리스트 중 질문을 선택하면 해당 질문의 옵션들이 노출
+노출된 옵션 중 택 1 하게 되면 해당 질문의 옵션이 선택됐을 떄만 보여지도록 처리
 
-### `npm test`
+isRequired : boolean | 다른 질문 리스트 중 질문을 선택하면 해당 질문의 옵션들이
+노출 노출된 옵션 중 택 1 하게 되면 해당 질문의 옵션이 선택됐을 떄만 필수이도록
+처리
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+question : 질문 내용
 
-### `npm run build`
+type : { 객관식 : 보기 중 1개 선택 체크박스 : 보기 중 여러 개 선택 단답형 : 단답
+장문형 : 장문 답변 범위 : input:range }
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+options: type = 객관식 | 체크박스 일 때 (여러개중 1 혹은 여러 개 선택){ title :
+옵션 이름 target : 해당 옵션 선택 시 이동할 타겟 질문의 id }
