@@ -8,8 +8,15 @@ export default interface IQuestionType {
     type: QuestionCategoryType;
     options:
         | {
+              id: string;
               title: string;
               target: string | null;
           }[]
         | null;
+    range: {
+        min: string;
+        max: string;
+        value: string;
+        step: string;
+    } | null;
 }

@@ -11,6 +11,8 @@ id:number; isShow: boolean | 다른 질문 리스트; isRequired: boolean | 다�
 type:"객관식" | "체크박스" | "단답형" | "장문형" | "범위"; options:{
 title:string; target:number | null; }[] | null;
 
+range:{ min:number; max:number; step:number; } | null
+
 id : 질문 고유 id
 
 isSHow : boolean | 다른 질문 리스트 중 질문을 선택하면 해당 질문의 옵션들이 노출
@@ -25,5 +27,7 @@ question : 질문 내용
 type : { 객관식 : 보기 중 1개 선택 체크박스 : 보기 중 여러 개 선택 단답형 : 단답
 장문형 : 장문 답변 범위 : input:range }
 
-options: type = 객관식 | 체크박스 일 때 (여러개중 1 혹은 여러 개 선택){ title :
+options : type = 객관식 | 체크박스 일 때 (여러개중 1 혹은 여러 개 선택){ title :
 옵션 이름 target : 해당 옵션 선택 시 이동할 타겟 질문의 id }
+
+range : type range 선택 시 range 범위
