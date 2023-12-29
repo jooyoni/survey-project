@@ -1,6 +1,6 @@
 import QuestionCategoryType from './questionCategoryType';
 
-export default interface IQuestionType {
+export interface IQuestionType {
     id: string;
     isShow: boolean | string;
     isRequired: boolean | string;
@@ -10,7 +10,7 @@ export default interface IQuestionType {
         | {
               id: string;
               title: string;
-              target: string | null;
+              target: string[];
           }[]
         | null;
     range: {
@@ -19,4 +19,8 @@ export default interface IQuestionType {
         value: string;
         step: string;
     } | null;
+}
+
+export interface IQuestionForUserType extends IQuestionType {
+    answer: string[];
 }

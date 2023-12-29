@@ -1,23 +1,21 @@
-import {
-    DragDropContext,
-    Draggable,
-    DropResult,
-    Droppable,
-} from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import Question from '../../components/Question/Question';
 import styles from './CreateSurvey.module.scss';
 import { useEffect, useState } from 'react';
-import IQuestionType from '../../types/questionType';
+import { IQuestionType } from '../../types/questionType';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 function CreateSurvey() {
+    const navigate = useNavigate();
+    const [surveyTitle, setSurveyTitle] = useState('');
     const [questionData, setQuestionData] = useState<IQuestionType[]>([]);
     const [activeQuestionIdx, setActiveQuestionIdx] = useState(0);
     useEffect(() => {
         setQuestionData([
             {
                 id: uuidv4(),
-                isShow: false,
+                isShow: true,
                 isRequired: true,
                 question: '',
                 type: '객관식',
@@ -27,7 +25,7 @@ function CreateSurvey() {
         ]);
     }, []);
 
-    function handleUpdateQuestion(idx: number, data: IQuestionType) {
+    function updateQuestion(idx: number, data: IQuestionType) {
         setQuestionData((prev) => {
             const newData = [...prev];
             newData[idx] = data;
@@ -40,12 +38,19 @@ function CreateSurvey() {
         let questionList = [...questionData];
         let changedQuestionIdx: number;
         questionList.forEach((question, idx) => {
-            if (question.id === dropResult.draggableId)
-                changedQuestionIdx = idx;
+            if (question.id === dropResult.draggableId) changedQuestionIdx = idx;
         });
         let changedQuestion = questionList.splice(changedQuestionIdx!, 1)[0];
         questionList.splice(dropResult.destination?.index, 0, changedQuestion!);
         setQuestionData(questionList);
+        setActiveQuestionIdx(dropResult.destination?.index);
+    }
+    function deleteQuestion(idx: number) {
+        setQuestionData((prev) => {
+            let newData = [...prev];
+            newData.splice(idx, 1);
+            return newData;
+        });
     }
 
     function addQuestion() {
@@ -53,7 +58,7 @@ function CreateSurvey() {
             let newData = [...prev];
             newData.splice(activeQuestionIdx + 1, 0, {
                 id: uuidv4(),
-                isShow: false,
+                isShow: true,
                 isRequired: true,
                 question: '',
                 type: '객관식',
@@ -64,13 +69,25 @@ function CreateSurvey() {
         });
         setActiveQuestionIdx((prev) => prev + 1);
     }
+
+    function saveSurvey() {
+        const data = JSON.parse(localStorage.getItem('surveys') || '{}');
+        localStorage.setItem('surveys', JSON.stringify({ ...data, [uuidv4()]: { title: surveyTitle, questionData } }));
+        navigate('/');
+    }
     return (
         <main className={styles.container}>
             <div className={styles.contentWrap}>
-                <div className={styles.questionListWrap}>
-                    <DragDropContext
-                        onDragEnd={(dropResult) => sortQuestion(dropResult)}
-                    >
+                <div className={styles.questionWrap}>
+                    <div className={styles.questionTitle}>
+                        <input
+                            type='text'
+                            placeholder='설문 제목'
+                            value={surveyTitle}
+                            onChange={(e) => setSurveyTitle(e.currentTarget.value)}
+                        />
+                    </div>
+                    <DragDropContext onDragEnd={(dropResult) => sortQuestion(dropResult)}>
                         <Droppable droppableId={'questions'}>
                             {(provided) => (
                                 <ul
@@ -79,19 +96,11 @@ function CreateSurvey() {
                                     className={styles.questionList}
                                 >
                                     {questionData.map((data, idx) => (
-                                        <Draggable
-                                            draggableId={data.id}
-                                            key={data.id}
-                                            index={idx}
-                                        >
+                                        <Draggable draggableId={data.id} key={data.id} index={idx}>
                                             {(provided) => (
                                                 <li
                                                     tabIndex={1}
-                                                    onFocus={() =>
-                                                        setActiveQuestionIdx(
-                                                            idx
-                                                        )
-                                                    }
+                                                    onFocus={() => setActiveQuestionIdx(idx)}
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     onClick={(e) => {
@@ -99,18 +108,13 @@ function CreateSurvey() {
                                                     }}
                                                 >
                                                     <Question
-                                                        isActive={
-                                                            activeQuestionIdx ===
-                                                            idx
-                                                        }
-                                                        dragHandleProps={
-                                                            provided.dragHandleProps
-                                                        }
+                                                        allQuestion={questionData}
+                                                        isActive={activeQuestionIdx === idx}
+                                                        dragHandleProps={provided.dragHandleProps}
                                                         data={data}
-                                                        idx={idx}
-                                                        handleUpdateQuestion={
-                                                            handleUpdateQuestion
-                                                        }
+                                                        questionIndex={idx}
+                                                        updateQuestion={updateQuestion}
+                                                        deleteQuestion={deleteQuestion}
                                                     />
                                                 </li>
                                             )}
@@ -121,7 +125,9 @@ function CreateSurvey() {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    <button className={styles.submitBtn}>설문 생성</button>
+                    <button className={styles.submitBtn} onClick={saveSurvey}>
+                        설문 생성
+                    </button>
                 </div>
                 <article className={styles.stickyToolWrap}>
                     <ul>

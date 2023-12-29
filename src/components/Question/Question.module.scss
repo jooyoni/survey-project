@@ -8,7 +8,7 @@
     border-radius: 12px;
     padding: 20px 10px;
     &.hit {
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.7);
     }
 }
 
@@ -72,7 +72,7 @@
             border-style: solid;
         }
         &.open::after {
-            transform: rotate(180deg);
+            transform: translateY(-50%) rotate(180deg);
         }
     }
 }
@@ -80,7 +80,7 @@
 .optionList {
     display: flex;
     flex-direction: column;
-    li {
+    .option {
         width: 100%;
         height: 50px;
         display: flex;
@@ -95,6 +95,53 @@
             background-color: #e7e5e5;
             border-bottom: 1px solid #292929;
             padding-left: 20px;
+        }
+        .targetSelectArea {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            position: relative;
+            width: 220px;
+            padding-left: 10px;
+            border: 1px solid rgba(60, 64, 67, 0.3);
+            background-color: white;
+            cursor: pointer;
+            span {
+                font-size: 14px;
+            }
+            .targetList {
+                position: absolute;
+                bottom: 0;
+                left: -1px;
+                right: -1px;
+                transform: translateY(100%);
+                background-color: white;
+                border: 1px solid rgba(60, 64, 67, 0.3);
+                z-index: 1;
+                li {
+                    padding-left: 10px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    &.hit {
+                        background-color: rgba(0, 255, 255, 0.95);
+                    }
+                }
+            }
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                right: 16px;
+                transform: translateY(-50%);
+                border-color: #5f6368 transparent;
+                border-width: 5px 5px 0 5px;
+                border-style: solid;
+            }
+            &.open::after {
+                transform: translateY(-50%) rotate(180deg);
+            }
         }
         .removeOptionBtn {
             margin-left: auto;
@@ -164,7 +211,8 @@
     gap: 20px;
     align-items: center;
     justify-content: flex-end;
-    .required {
+    .required,
+    .show {
         display: flex;
         align-items: center;
         gap: 10px;

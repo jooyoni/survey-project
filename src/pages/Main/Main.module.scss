@@ -1,0 +1,14 @@
+.surveyList {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 500px;
+    li {
+        padding: 10px;
+        cursor: pointer;
+        border: 1px solid rgba(60, 64, 67, 0.3);
+        &:hover {
+            background-color: rgba(60, 64, 67, 0.3);
+        }
+    }
+}
