@@ -15,8 +15,8 @@ function CreateSurvey() {
         setQuestionData([
             {
                 id: uuidv4(),
-                isShow: true,
-                isRequired: true,
+                isShow: [true],
+                isRequired: [true],
                 question: '',
                 type: '객관식',
                 options: null,
@@ -58,8 +58,8 @@ function CreateSurvey() {
             let newData = [...prev];
             newData.splice(activeQuestionIdx + 1, 0, {
                 id: uuidv4(),
-                isShow: true,
-                isRequired: true,
+                isShow: [true],
+                isRequired: [true],
                 question: '',
                 type: '객관식',
                 options: null,
@@ -71,8 +71,15 @@ function CreateSurvey() {
     }
 
     function saveSurvey() {
+        if (!surveyTitle) {
+            alert('설문 제목을 입력하세요.');
+            return;
+        }
         const data = JSON.parse(localStorage.getItem('surveys') || '{}');
-        localStorage.setItem('surveys', JSON.stringify({ ...data, [uuidv4()]: { title: surveyTitle, questionData } }));
+        localStorage.setItem(
+            'surveys',
+            JSON.stringify({ ...data, [uuidv4()]: { title: surveyTitle, questionData, results: {} } })
+        );
         navigate('/');
     }
     return (
@@ -107,6 +114,7 @@ function CreateSurvey() {
                                                         e.stopPropagation();
                                                     }}
                                                 >
+                                                    {idx + 1}.
                                                     <Question
                                                         allQuestion={questionData}
                                                         isActive={activeQuestionIdx === idx}

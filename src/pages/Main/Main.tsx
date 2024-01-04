@@ -14,13 +14,24 @@ function Main() {
     useEffect(() => {
         setSurveyData(JSON.parse(localStorage.getItem('surveys') || '{}'));
     }, []);
+
+    function handleDelete(key: string) {
+        let db = JSON.parse(localStorage.getItem('surveys') || '{}');
+        delete db[key];
+        setSurveyData(db);
+        localStorage.setItem('surveys', JSON.stringify(db));
+    }
     return (
         <main className={styles.container}>
             <button onClick={() => navigate('/create-question')}>설문 생성</button>
             <ul className={styles.surveyList}>
                 {Object.keys(surveyData).map((key) => (
-                    <li key={key} onClick={() => navigate(`/survey/${key}`)}>
-                        {surveyData[key].title}
+                    <li key={key}>
+                        <div onClick={() => navigate(`/result/${key}`)}>
+                            <span>{surveyData[key].title}</span>
+                        </div>
+                        <button onClick={() => navigate(`/survey/${key}`)}>설문 참여하기</button>
+                        <button onClick={() => handleDelete(key)}>삭제</button>
                     </li>
                 ))}
                 {/* {surveyData.map((survey) => {

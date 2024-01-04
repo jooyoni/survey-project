@@ -146,14 +146,14 @@ function Question({
     function handleRequire() {
         setQuestion((prev) => ({
             ...prev,
-            isRequired: !prev.isRequired,
+            isRequired: prev.isRequired.length ? [] : [true],
         }));
     }
 
     function handleShow() {
         setQuestion((prev) => ({
             ...prev,
-            isShow: !prev.isShow,
+            isShow: prev.isShow.length ? [] : [true],
         }));
     }
 
@@ -364,13 +364,13 @@ function Question({
                 <li className={styles.delete}>
                     <button onClick={() => deleteQuestion(questionIndex)}>delete</button>
                 </li>
-                <li className={`${styles.required} ${question.isRequired ? styles.active : ''}`}>
+                <li className={`${styles.required} ${question.isRequired.length ? styles.active : ''}`}>
                     <span>필수</span>
                     <button onClick={handleRequire}>
                         <div></div>
                     </button>
                 </li>
-                <li className={`${styles.show} ${!question.isShow ? styles.active : ''}`}>
+                <li className={`${styles.show} ${!question.isShow.length ? styles.active : ''}`}>
                     <span>숨킴</span>
                     <button onClick={handleShow}>
                         <div></div>

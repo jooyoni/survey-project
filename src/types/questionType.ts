@@ -2,8 +2,8 @@ import QuestionCategoryType from './questionCategoryType';
 
 export interface IQuestionType {
     id: string;
-    isShow: boolean | string;
-    isRequired: boolean | string;
+    isShow: (boolean | string)[];
+    isRequired: (boolean | string)[];
     question: string;
     type: QuestionCategoryType;
     options:

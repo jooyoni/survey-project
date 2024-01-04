@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/Main/Main';
 import CreateSurvey from './pages/CreateSurvey/CreateSurvey';
 import Survey from './pages/Survey/Survey';
+import Result from './pages/Result/Result';
+import ResultDetail from './pages/ResultDetail/ResultDetail';
 
 function App() {
     return (
@@ -12,6 +14,8 @@ function App() {
                     <Route path='/' element={<Main />} />
                     <Route path='/create-question' element={<CreateSurvey />} />
                     <Route path='/survey/:id' element={<Survey />} />
+                    <Route path='/result/:id' element={<Result />} />
+                    <Route path='/result/:surveyId/:answerId' element={<ResultDetail />} />
                 </Routes>
             </BrowserRouter>
         </div>

@@ -1,0 +1,37 @@
+.questionList {
+    .optionList {
+        & > li {
+            position: relative;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            width: 500px;
+            background-color: rgba(210, 233, 168, 0.3);
+            span {
+                position: relative;
+                z-index: 1;
+            }
+            .bg {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+            }
+        }
+    }
+}
+.resultList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    & > li {
+        width: 400px;
+        padding: 10px;
+        cursor: pointer;
+        border: 1px solid rgba(60, 64, 67, 0.3);
+        position: relative;
+        &:hover {
+            background-color: rgba(60, 64, 67, 0.3);
+        }
+    }
+}
