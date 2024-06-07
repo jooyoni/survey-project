@@ -22,8 +22,10 @@ function Result() {
             <ul className={styles.questionList}>
                 {questions.map((question) => {
                     let total = Object.keys(results).reduce((sum, key) => {
-                        let qst = results[key].filter((answer) => answer.id === question.id)[0];
-                        if (qst?.isShow?.length) return sum + 1;
+                        let qst = results[key].filter(
+                            (answer) => answer.id === question.id
+                        )[0];
+                        if (qst?.isShow) return sum + 1;
                         else return sum;
                     }, 0);
                     return (
@@ -31,14 +33,27 @@ function Result() {
                             <h3>
                                 {question.question} 총 답변 수 : {total}
                             </h3>
-                            {(question.type === '객관식' || question.type === '체크박스') && (
+                            {(question.type === 'CHECK' ||
+                                question.type === 'MULTIPLE') && (
                                 <ul className={styles.optionList}>
-                                    {question.options?.map((option) => {
-                                        let value = Object.keys(results).reduce((sum, key) => {
-                                            let qst = results[key].filter((answer) => answer.id === question.id)[0];
-                                            if (qst?.answer?.includes(option.id)) return sum + 1;
-                                            else return sum;
-                                        }, 0);
+                                    {question.optionList?.map((option) => {
+                                        let value = Object.keys(results).reduce(
+                                            (sum, key) => {
+                                                let qst = results[key].filter(
+                                                    (answer) =>
+                                                        answer.id ===
+                                                        question.id
+                                                )[0];
+                                                if (
+                                                    qst?.answer?.includes(
+                                                        option.id
+                                                    )
+                                                )
+                                                    return sum + 1;
+                                                else return sum;
+                                            },
+                                            0
+                                        );
                                         return (
                                             <li key={option.id}>
                                                 <span>{option.title}</span>
@@ -46,8 +61,13 @@ function Result() {
                                                 <div
                                                     className={styles.bg}
                                                     style={{
-                                                        width: `${(value / total) * 100}%`,
-                                                        backgroundColor: `rgba(100,100,100,${value / total})`,
+                                                        width: `${
+                                                            (value / total) *
+                                                            100
+                                                        }%`,
+                                                        backgroundColor: `rgba(100,100,100,${
+                                                            value / total
+                                                        })`,
                                                     }}
                                                 ></div>
                                             </li>
@@ -55,12 +75,21 @@ function Result() {
                                     })}
                                 </ul>
                             )}
-                            {(question.type === '단답형' || question.type === '장문형' || question.type === '범위') && (
+                            {(question.type === 'SHORT' ||
+                                question.type === 'LONG' ||
+                                question.type === 'RANGE') && (
                                 <ul className={styles.sentenceAnswerWrap}>
                                     {Object.keys(results).map((key) =>
                                         results[key]
-                                            .filter((answer) => answer.id === question.id)
-                                            .map((answer) => <li key={answer.id}>{answer.answer[0]}</li>)
+                                            .filter(
+                                                (answer) =>
+                                                    answer.id === question.id
+                                            )
+                                            .map((answer) => (
+                                                <li key={answer.id}>
+                                                    {answer.answer[0]}
+                                                </li>
+                                            ))
                                     )}
                                 </ul>
                             )}
@@ -73,7 +102,12 @@ function Result() {
                     // const KEY = Object.keys(data)[0];
                     // const question = data[KEY];
                     return (
-                        <li key={key} onClick={() => navigate(`/result/${surveyId}/${key}`)}>
+                        <li
+                            key={key}
+                            onClick={() =>
+                                navigate(`/result/${surveyId}/${key}`)
+                            }
+                        >
                             {key}
                         </li>
                     );

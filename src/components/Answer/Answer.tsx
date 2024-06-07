@@ -4,25 +4,30 @@ import styles from './Answer.module.scss';
 
 interface IPropsType {
     questionData: IQuestionForUserType;
-    updateAllData: (id: string, data: IQuestionForUserType) => void;
+    // updateAllData: (id: string, data: IQuestionForUserType) => void;
 }
-function Answer({ questionData, updateAllData }: IPropsType) {
-    const [question, setQuestion] = useState(questionData);
+function Answer({ questionData }: IPropsType) {
+    const [question, setQuestion] = useState<any>(questionData);
 
-    useEffect(() => {
-        updateAllData(question.id, question);
-    }, [question]);
+    // useEffect(() => {
+    //     updateAllData(question.id, question);
+    // }, [question]);
 
     function updateAnswer(answer: string) {
-        setQuestion((prev) => {
+        setQuestion((prev: any) => {
             let newAnswer = [...question.answer];
-            if (question.type === '객관식') {
+            if (question.type === 'CHECK') {
                 if (newAnswer[0] === answer) newAnswer = [];
                 else newAnswer = [answer];
-            } else if (question.type === '체크박스') {
-                if (newAnswer.includes(answer)) newAnswer = newAnswer.filter((val) => val !== answer);
+            } else if (question.type === 'MULTIPLE') {
+                if (newAnswer.includes(answer))
+                    newAnswer = newAnswer.filter((val) => val !== answer);
                 else newAnswer.push(answer);
-            } else if (question.type === '단답형' || question.type === '장문형' || question.type === '범위') {
+            } else if (
+                question.type === 'SHORT' ||
+                question.type === 'LONG' ||
+                question.type === 'RANGE'
+            ) {
                 newAnswer = [answer];
             }
             return { ...prev, answer: newAnswer };
@@ -32,11 +37,15 @@ function Answer({ questionData, updateAllData }: IPropsType) {
     return (
         <article className={styles.container}>
             <h3>{question.question}</h3>
-            {(question.type === '객관식' || question.type === '체크박스') && (
+            {(question.type === 'CHECK' || question.type === 'MULTIPLE') && (
                 <ul className={styles.optionList}>
-                    {question.options?.map((option) => (
+                    {question.options?.map((option: any) => (
                         <li
-                            className={`${styles.option} ${question.answer.includes(option.id) ? styles.hit : ''}`}
+                            className={`${styles.option} ${
+                                question.answer.includes(option.id)
+                                    ? styles.hit
+                                    : ''
+                            }`}
                             key={option.id}
                             onClick={() => updateAnswer(option.id)}
                         >
@@ -46,26 +55,33 @@ function Answer({ questionData, updateAllData }: IPropsType) {
                     ))}
                 </ul>
             )}
-            {(question.type === '단답형' || question.type === '장문형') && (
+            {(question.type === 'SHORT' || question.type === 'LONG') && (
                 <div className={styles.sentenceAnswerWrap}>
-                    {question.type === '단답형' && (
-                        <input value={question.answer[0] || ''} onChange={(e) => updateAnswer(e.currentTarget.value)} />
+                    {question.type === 'SHORT' && (
+                        <input
+                            value={question.answer[0] || ''}
+                            onChange={(e) =>
+                                updateAnswer(e.currentTarget.value)
+                            }
+                        />
                     )}
-                    {question.type === '장문형' && (
+                    {question.type === 'LONG' && (
                         <textarea
                             value={question.answer[0] || ''}
-                            onChange={(e) => updateAnswer(e.currentTarget.value)}
+                            onChange={(e) =>
+                                updateAnswer(e.currentTarget.value)
+                            }
                         />
                     )}
                 </div>
             )}
-            {question.type === '범위' && (
+            {question.type === 'RANGE' && (
                 <div className={styles.rangeAnswerWrap}>
                     <input
                         type='range'
-                        min={question.range?.min}
-                        max={question.range?.max}
-                        step={question.range?.step}
+                        min={question.rangeValue?.min}
+                        max={question.rangeValue?.max}
+                        step={question.rangeValue?.step}
                         value={question.answer}
                         onChange={(e) => updateAnswer(e.currentTarget.value)}
                     />

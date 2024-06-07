@@ -20,19 +20,29 @@ function ResultDetail() {
                     <li key={question.id}>
                         <h3>{question.question}</h3>
 
-                        {(question.type === '객관식' || question.type === '체크박스') && question.options && (
-                            <ul>
-                                {question.options?.map((option) => (
-                                    <li
-                                        key={option.id}
-                                        className={question.answer.includes(option.id) ? styles.hit : ''}
-                                    >
-                                        {option.title}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                        {(question.type === '단답형' || question.type === '장문형' || question.type === '범위') && (
+                        {(question.type === 'CHECK' ||
+                            question.type === 'MULTIPLE') &&
+                            question.optionList && (
+                                <ul>
+                                    {question.optionList?.map((option) => (
+                                        <li
+                                            key={option.id}
+                                            className={
+                                                question.answer.includes(
+                                                    option.id
+                                                )
+                                                    ? styles.hit
+                                                    : ''
+                                            }
+                                        >
+                                            {option.title}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        {(question.type === 'SHORT' ||
+                            question.type === 'LONG' ||
+                            question.type === 'RANGE') && (
                             <div>{question.answer[0]}</div>
                         )}
                     </li>

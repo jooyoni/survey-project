@@ -1,27 +1,28 @@
 import QuestionCategoryType from './questionCategoryType';
 
 export interface IQuestionType {
-  id: string;
-  isShow: (boolean | string)[];
-  isRequired: (boolean | string)[];
-  question: string;
-  type: QuestionCategoryType;
-  options:
-    | {
-        id: string;
-        title: string;
-        target: string[];
-      }[]
-    | null;
-  range: {
+    answer: string[];
     id: string;
-    min: string;
-    max: string;
-    value: string;
-    step: string;
-  } | null;
+    isRequired: boolean;
+    isShow: boolean;
+    optionList:
+        | null
+        | {
+              id: string;
+              title: string;
+              target: string[];
+          }[];
+    question: string;
+    rangeValue: null | {
+        id: string;
+        min: string;
+        max: string;
+        value: string;
+        step: string;
+    };
+    type: 'LONG' | 'SHORT' | 'MULTIPLE' | 'CHECK' | 'RANGE';
 }
 
 export interface IQuestionForUserType extends IQuestionType {
-  answer: string[];
+    answer: string[];
 }

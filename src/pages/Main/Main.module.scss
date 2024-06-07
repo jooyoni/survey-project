@@ -18,3 +18,14 @@
         }
     }
 }
+.preinquiryList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    padding: 10px;
+    li {
+        border: 1px solid black;
+        cursor: pointer;
+    }
+}
